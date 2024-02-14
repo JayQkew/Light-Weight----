@@ -11,9 +11,9 @@ public class InputManager : MonoBehaviour
 
     public UnityEvent mainMashEvent;
 
-    public UnityEvent secondaryMashEvent_A;
+    public UnityEvent secondaryMashEvent_R;
 
-    public UnityEvent secondaryMashEvent_B;
+    public UnityEvent secondaryMashEvent_L;
 
     public UnityEvent thirdMashEvent;
 
@@ -26,15 +26,15 @@ public class InputManager : MonoBehaviour
     {
         switch (MashManager.Instance.currentMashType)
         {
-            case MashType.Main:
+            case MashType.Squat:
                 if (Input.GetKeyDown(keybinds.mainMash)) mainMashEvent.Invoke();
                 break;
-            case MashType.Secondary:
-                if (Input.GetKeyDown(keybinds.secondaryMash[0])) secondaryMashEvent_A.Invoke();
-                if (Input.GetKeyDown(keybinds.secondaryMash[1])) secondaryMashEvent_B.Invoke();
+            case MashType.Bench:
+                if (Input.GetKeyDown(keybinds.secondaryMash[0])) secondaryMashEvent_L.Invoke();
+                if (Input.GetKeyDown(keybinds.secondaryMash[1])) secondaryMashEvent_R.Invoke();
                 break;
-            case MashType.Third:
-                if (Input.mouseScrollDelta.y == -1) thirdMashEvent.Invoke();
+            case MashType.Deadlift:
+                if (Input.mouseScrollDelta.y > 0) thirdMashEvent.Invoke();
                 break;
             default:
                 break;
