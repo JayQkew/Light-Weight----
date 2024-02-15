@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MashManager : MonoBehaviour
+public class ExerciseManager : MonoBehaviour
 {
-    public static MashManager Instance { get; private set; }
+    public static ExerciseManager Instance { get; private set; }
 
     public MashType currentMashType;
+
 
     [Header("Right/Centre")]
     
@@ -32,10 +33,8 @@ public class MashManager : MonoBehaviour
     public float weight_L = 1f;     
     public float strength_L;    
 
-    [Header("Sliders")]
-    public Slider mashSlider;
-    public Slider secondaryMashSlider_R;
-    public Slider secondaryMashSlider_L;
+    public GameObject barbell;
+    public Rigidbody2D barbell_rb;
 
     private void Awake()
     {
@@ -44,51 +43,36 @@ public class MashManager : MonoBehaviour
 
     private void Start()
     {
+        barbell_rb = barbell.GetComponent<Rigidbody2D>();
+
         currentRepCount_R = weight_R;
         currentRepCount_L = weight_L;
 
+        // set weight and min/max positions
         switch (currentMashType)
         {
-            case MashType.None:
-                break;
             case MashType.Squat:
+                InputManager.Instance.mainMashEvent.AddListener(PushRep_R);
+                break;
             case MashType.Deadlift:
                 InputManager.Instance.thirdMashEvent.AddListener(PushRep_R);
-                InputManager.Instance.mainMashEvent.AddListener(PushRep_R);
 
-                mashSlider.gameObject.SetActive(true);
-                secondaryMashSlider_R.gameObject.SetActive(false);
-                secondaryMashSlider_L.gameObject.SetActive(false);
-
-                mashSlider.maxValue = weight_R;
-                mashSlider.minValue = 0;
                 break;
             case MashType.Bench:
                 InputManager.Instance.secondaryMashEvent_R.AddListener(PushRep_R);
                 InputManager.Instance.secondaryMashEvent_L.AddListener(PushRep_L);
-
-                mashSlider.gameObject.SetActive(false);
-                secondaryMashSlider_R.gameObject.SetActive(true);
-                secondaryMashSlider_L.gameObject.SetActive(true);
-
-                secondaryMashSlider_R.maxValue = weight_R;
-                secondaryMashSlider_L.maxValue = weight_L;
-
-                secondaryMashSlider_R.minValue = 0;
-                secondaryMashSlider_L.minValue = 0;
                 break;
         }
     }
 
     private void Update()
     {
-        MashUpdate();
+        //MashUpdate();
     }
 
     public void PushRep_R()
     {
-        currentRepCount_R += strength_R;
-        currentRepCount_R = Mathf.Clamp(currentRepCount_R, 0, weight_R);
+        barbell_rb.AddForce(Vector2.up * strength_R, ForceMode2D.Impulse);
     }
 
     public void PushRep_L()
@@ -102,16 +86,14 @@ public class MashManager : MonoBehaviour
         switch (currentMashType)
         {
             case MashType.Squat:
+                barbell.transform.position = new Vector3(barbell.transform.position.x, Mathf.MoveTowards(barbell.transform.position.y, 0, Mathf.Sqrt(repRate_R) * Time.deltaTime));
+                break;
             case MashType.Deadlift:
-                currentRepCount_R = Mathf.MoveTowards(currentRepCount_R, 0, repRate_R * Time.deltaTime);
-                mashSlider.value = currentRepCount_R;
+                barbell.transform.position = new Vector3(barbell.transform.position.x, Mathf.MoveTowards(barbell.transform.position.y, 0, Mathf.Sqrt(repRate_R) * Time.deltaTime));
                 break;
             case MashType.Bench:
-                currentRepCount_R = Mathf.MoveTowards(currentRepCount_R, 0, repRate_R * Time.deltaTime);
-                currentRepCount_L = Mathf.MoveTowards(currentRepCount_L, 0, repRate_L * Time.deltaTime);
-
-                secondaryMashSlider_R.value = currentRepCount_R;
-                secondaryMashSlider_L.value = currentRepCount_L;
+                currentRepCount_R = Mathf.MoveTowards(currentRepCount_R, 0, Mathf.Sqrt(repRate_R) * Time.deltaTime);
+                currentRepCount_L = Mathf.MoveTowards(currentRepCount_L, 0, Mathf.Sqrt(repRate_L) * Time.deltaTime);
                 break;
         }
     }

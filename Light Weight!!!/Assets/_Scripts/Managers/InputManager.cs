@@ -24,7 +24,7 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        switch (MashManager.Instance.currentMashType)
+        switch (ExerciseManager.Instance.currentMashType)
         {
             case MashType.Squat:
                 if (Input.GetKeyDown(keybinds.mainMash)) mainMashEvent.Invoke();
