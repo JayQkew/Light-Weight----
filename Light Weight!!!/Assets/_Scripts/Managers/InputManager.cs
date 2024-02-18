@@ -9,13 +9,13 @@ public class InputManager : MonoBehaviour
 
     public Keybind_SO keybinds;
 
-    public UnityEvent mainMashEvent;
+    public UnityEvent squatMashEvent;
 
-    public UnityEvent secondaryMashEvent_R;
+    public UnityEvent benchMashEvent_R;
 
-    public UnityEvent secondaryMashEvent_L;
+    public UnityEvent benchMashEvent_L;
 
-    public UnityEvent thirdMashEvent;
+    public UnityEvent deadliftMashEvent;
 
     private void Awake()
     {
@@ -27,14 +27,14 @@ public class InputManager : MonoBehaviour
         switch (ExerciseManager.Instance.currentMashType)
         {
             case MashType.Squat:
-                if (Input.GetKeyDown(keybinds.mainMash)) mainMashEvent.Invoke();
+                if (Input.GetKeyDown(keybinds.squatMash)) squatMashEvent.Invoke();
                 break;
             case MashType.Bench:
-                if (Input.GetKeyDown(keybinds.secondaryMash[0])) secondaryMashEvent_L.Invoke();
-                if (Input.GetKeyDown(keybinds.secondaryMash[1])) secondaryMashEvent_R.Invoke();
+                if (Input.GetKeyDown(keybinds.benchMash[0])) benchMashEvent_L.Invoke();
+                if (Input.GetKeyDown(keybinds.benchMash[1])) benchMashEvent_R.Invoke();
                 break;
             case MashType.Deadlift:
-                if (Input.mouseScrollDelta.y > 0) thirdMashEvent.Invoke();
+                if (Input.mouseScrollDelta.y > 0) deadliftMashEvent.Invoke();
                 break;
             default:
                 break;

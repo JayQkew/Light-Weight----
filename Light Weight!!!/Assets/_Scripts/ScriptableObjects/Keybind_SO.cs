@@ -5,8 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ScriptableObjects", menuName = "InputSettings")]
 public class Keybind_SO : ScriptableObject
 {
-    public KeyCode mainMash = KeyCode.Space;
-    public KeyCode[] secondaryMash =
+    public KeyCode squatMash = KeyCode.Space;
+    public KeyCode[] benchMash =
     {
         KeyCode.A,
         KeyCode.L

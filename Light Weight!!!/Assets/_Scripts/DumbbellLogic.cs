@@ -7,11 +7,11 @@ public class DumbbellLogic : MonoBehaviour
     public float yMinClamp;
     public float yMaxClamp;
 
-    public Rigidbody2D rigidbody2;
+    public Rigidbody2D rb;
 
     private void Start()
     {
-        rigidbody2 = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
     private void Update()
     {
@@ -19,7 +19,7 @@ public class DumbbellLogic : MonoBehaviour
 
         if (transform.position.y == yMaxClamp)
         {
-            rigidbody2.velocity = Vector2.zero;
+            rb.velocity = Vector2.zero;
         }
     }
 }

@@ -9,14 +9,21 @@ public class ExerciseManager : MonoBehaviour
 
     public MashType currentMashType;
 
+    /// <summary>
+    /// PLAYER GAINS STRENGTHS AFTER 5 REPS RELATIVE TO THE WEIGHT THEY ARE LIFTING
+    /// PLAYERS CAN CHOOSE WEIGHTS
+    /// </summary>
 
-    [Header("Right/Centre")]
-    public float strength_Both;
-    public float strength_R;    
-    public float strength_L;    
+    [Header("Exercise")]
+    public Strength_SO playerStrength;
+    public float strength;
+    public Vector3 handDistance;
 
     public GameObject barbell;
     public Rigidbody2D barbell_rb;
+    public GameObject[] plates;
+    [Range(1, 10)]
+    public int weightLevel;
 
     private void Awake()
     {
@@ -31,33 +38,36 @@ public class ExerciseManager : MonoBehaviour
         switch (currentMashType)
         {
             case MashType.Squat:
-                InputManager.Instance.mainMashEvent.AddListener(PushRep_R);
+                strength = playerStrength.squatStrength * 30f;
+                InputManager.Instance.squatMashEvent.AddListener(PushRep);
                 break;
             case MashType.Deadlift:
-                InputManager.Instance.thirdMashEvent.AddListener(PushRep_R);
-
+                strength = playerStrength.deadliftStrength * 7.5f;
+                InputManager.Instance.deadliftMashEvent.AddListener(PushRep);
                 break;
             case MashType.Bench:
-                InputManager.Instance.secondaryMashEvent_R.AddListener(PushRep_R);
-                InputManager.Instance.secondaryMashEvent_L.AddListener(PushRep_L);
+                strength = playerStrength.benchStrength * 1000f;
+                InputManager.Instance.benchMashEvent_R.AddListener(PushRepAt_R);
+                InputManager.Instance.benchMashEvent_L.AddListener(PushRepAt_L);
                 break;
         }
     }
 
-    private void Update()
+
+    public void PushRep() => barbell_rb.AddForce(Vector2.up * strength, ForceMode2D.Impulse);
+    public void PushRepAt_R() => barbell_rb.AddForceAtPosition(Vector2.up * strength, barbell.transform.position + handDistance);
+    public void PushRepAt_L() => barbell_rb.AddForceAtPosition(Vector2.up * strength, barbell.transform.position - handDistance);
+
+    public void WeightChange()
     {
-        //MashUpdate();
+        foreach(var plate in plates)
+        {
+            plate.transform.localScale = new Vector3(0.2f * weightLevel, plate.transform.localScale.y);
+        }
+
+        barbell_rb.mass = 20 + (weightLevel * 5);
     }
 
-    public void PushRep_R()
-    {
-        barbell_rb.AddForce(Vector2.up * strength_R, ForceMode2D.Impulse);
-    }
-
-    public void PushRep_L()
-    {
-        barbell_rb.AddForce(Vector2.up * strength_L, ForceMode2D.Impulse);
-    }
 }
 
 public enum MashType

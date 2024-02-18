@@ -22,7 +22,7 @@ public class CameraManager : MonoBehaviour
 
     private void Start()
     {
-        InputManager.Instance.mainMashEvent.AddListener(CameraShakeIncrease);
+        InputManager.Instance.squatMashEvent.AddListener(CameraShakeIncrease);
     }
 
     private void Update()
