@@ -22,7 +22,21 @@ public class CameraManager : MonoBehaviour
 
     private void Start()
     {
-        InputManager.Instance.squatMashEvent.AddListener(CameraShakeIncrease);
+        switch (ExerciseManager.Instance.currentMashType)
+        {
+            case MashType.None:
+                break;
+            case MashType.squat:
+                InputManager.Instance.squatMashEvent.AddListener(CameraShakeIncrease);
+                break;
+            case MashType.bench:
+                InputManager.Instance.benchMashEvent_L.AddListener(CameraShakeIncrease);
+                InputManager.Instance.benchMashEvent_R.AddListener(CameraShakeIncrease);
+                break;
+            case MashType.deadlift:
+                InputManager.Instance.deadliftMashEvent.AddListener(CameraShakeIncrease);
+                break;
+        }
     }
 
     private void Update()
@@ -32,8 +46,8 @@ public class CameraManager : MonoBehaviour
         frequencyShake += cameraShakeDecrease * Time.deltaTime;
         amplitureShake += cameraShakeDecrease * Time.deltaTime;
 
-        amplitureShake = Mathf.Clamp(amplitureShake, -0.3f, 0);
-        frequencyShake = Mathf.Clamp(frequencyShake, -0.3f, 0);
+        amplitureShake = Mathf.Clamp(amplitureShake, -0.4f, 0);
+        frequencyShake = Mathf.Clamp(frequencyShake, -0.4f, 0);
 
         cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = amplitureShake;
         cinemachineBasicMultiChannelPerlin.m_FrequencyGain = frequencyShake;

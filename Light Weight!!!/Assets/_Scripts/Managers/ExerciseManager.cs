@@ -37,16 +37,16 @@ public class ExerciseManager : MonoBehaviour
         // set weight and min/max positions
         switch (currentMashType)
         {
-            case MashType.Squat:
-                strength = playerStrength.squatStrength * 30f;
+            case MashType.squat:
+                strength = (playerStrength.squatStrength * 30f) + playerStrength.s_gainedStrength;
                 InputManager.Instance.squatMashEvent.AddListener(PushRep);
                 break;
-            case MashType.Deadlift:
-                strength = playerStrength.deadliftStrength * 7.5f;
+            case MashType.deadlift:
+                strength = (playerStrength.deadliftStrength * 7.5f) + playerStrength.d_gainedStrength;
                 InputManager.Instance.deadliftMashEvent.AddListener(PushRep);
                 break;
-            case MashType.Bench:
-                strength = playerStrength.benchStrength * 1000f;
+            case MashType.bench:
+                strength = (playerStrength.benchStrength * 1000f) + playerStrength.b_gainedStrength;
                 InputManager.Instance.benchMashEvent_R.AddListener(PushRepAt_R);
                 InputManager.Instance.benchMashEvent_L.AddListener(PushRepAt_L);
                 break;
@@ -68,12 +68,30 @@ public class ExerciseManager : MonoBehaviour
         barbell_rb.mass = 20 + (weightLevel * 5);
     }
 
+    public void IncreaseStrength()
+    {
+        switch (currentMashType)
+        {
+            case MashType.squat:
+                playerStrength.s_gainedStrength += 5;
+                strength += 5;
+                break;
+            case MashType.bench:
+                playerStrength.b_gainedStrength += 10;
+                strength += 10;
+                break;
+            case MashType.deadlift:
+                playerStrength.d_gainedStrength += 1.5f;
+                strength += 1.5f;
+                break;
+        }
+    }
 }
 
 public enum MashType
 {
     None,
-    Squat,
-    Bench,
-    Deadlift
+    squat,
+    bench,
+    deadlift
 }

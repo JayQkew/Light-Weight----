@@ -9,6 +9,9 @@ public class DumbbellLogic : MonoBehaviour
 
     public Rigidbody2D rb;
 
+    public GameObject[] hands;
+    public GameObject[] handsPos;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -21,5 +24,8 @@ public class DumbbellLogic : MonoBehaviour
         {
             rb.velocity = Vector2.zero;
         }
+
+        hands[0].transform.position = handsPos[0].transform.position;
+        hands[1].transform.position = handsPos[1].transform.position;
     }
 }

@@ -15,3 +15,6 @@ MonoBehaviour:
   squatStrength: 1
   benchStrength: 1
   deadliftStrength: 1
+  s_gainedStrength: 0
+  b_gainedStrength: 0
+  d_gainedStrength: 0

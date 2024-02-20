@@ -26,14 +26,14 @@ public class InputManager : MonoBehaviour
     {
         switch (ExerciseManager.Instance.currentMashType)
         {
-            case MashType.Squat:
+            case MashType.squat:
                 if (Input.GetKeyDown(keybinds.squatMash)) squatMashEvent.Invoke();
                 break;
-            case MashType.Bench:
+            case MashType.bench:
                 if (Input.GetKeyDown(keybinds.benchMash[0])) benchMashEvent_L.Invoke();
                 if (Input.GetKeyDown(keybinds.benchMash[1])) benchMashEvent_R.Invoke();
                 break;
-            case MashType.Deadlift:
+            case MashType.deadlift:
                 if (Input.mouseScrollDelta.y > 0) deadliftMashEvent.Invoke();
                 break;
             default:
